@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - '5000:5000'
+    networks:
+      - primetrade-network
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api
+    ports:
+      - '80:80'
+    environment:
+      - VITE_API_BASE_URL=/api
+    depends_on:
+      - backend
+    networks:
+      - primetrade-network
+
+networks:
+  primetrade-network:
+    driver: bridge
